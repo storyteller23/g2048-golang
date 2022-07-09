@@ -12,7 +12,10 @@ var score = 0
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	area := createArea()
+	var squareSize int
+	fmt.Print("Input square size: ")
+	fmt.Scan(&squareSize)
+	area := createArea(squareSize)
 	for {
 		getTwoOfFour(area)
 		displayArea(area)
@@ -23,13 +26,13 @@ func main() {
 			}
 			switch string(char) {
 			case "w":
-				toUp(area)
+				area = toUp(area)
 			case "s":
-				toDown(area)
+				area = toDown(area)
 			case "a":
-				toLeft(area)
+				area = toLeft(area)
 			case "d":
-				toRight(area)
+				area = toRight(area)
 			case "q":
 				return
 			default:
@@ -40,19 +43,27 @@ func main() {
 	}
 }
 
-func createArea() [][]int {
-	res := make([][]int, 4)
+func createArea(n int) [][]int {
+	res := make([][]int, n)
 	for i := 0; i < len(res); i++ {
-		res[i] = append(res[i], make([]int, 4)...)
+		res[i] = append(res[i], make([]int, n)...)
 	}
 	return res
 }
 
 func displayArea(area [][]int) {
 	fmt.Print("\033[H\033[2J")
-	fmt.Println("o--------o--------o--------o--------o")
+	fmt.Print("o")
+	for i := 0; i < len(area); i++ {
+		fmt.Print("--------o")
+	}
+	fmt.Println()
 	for _, row := range area {
-		fmt.Println("|        |        |        |        |")
+		fmt.Print("|")
+		for i := 0; i < len(area); i++ {
+			fmt.Print("        |")
+		}
+		fmt.Println()
 		fmt.Print("|")
 		for _, n := range row {
 			if n == 0 {
@@ -62,8 +73,16 @@ func displayArea(area [][]int) {
 			}
 		}
 		fmt.Println()
-		fmt.Println("|        |        |        |        |")
-		fmt.Println("o--------o--------o--------o--------o")
+		fmt.Print("|")
+		for i := 0; i < len(area); i++ {
+			fmt.Print("        |")
+		}
+		fmt.Println()
+		fmt.Print("o")
+		for i := 0; i < len(area); i++ {
+			fmt.Print("--------o")
+		}
+		fmt.Println()
 	}
 	fmt.Printf("\t\tSCORE: %d\n", score)
 	fmt.Println("'w' - UP")
@@ -98,7 +117,7 @@ func getTwoOfFour(area [][]int) {
 	}
 }
 
-func toUp(area [][]int) {
+func toUp(area [][]int) [][]int {
 	for k := 0; k < len(area); k++ {
 		for i := 0; i < len(area); i++ {
 			for j := 1; j < len(area); j++ {
@@ -126,9 +145,10 @@ func toUp(area [][]int) {
 			}
 		}
 	}
+	return area
 }
 
-func toDown(area [][]int) {
+func toDown(area [][]int) [][]int {
 	for k := 0; k < len(area); k++ {
 		for i := len(area) - 1; i >= 0; i-- {
 			for j := len(area) - 2; j >= 0; j-- {
@@ -156,9 +176,10 @@ func toDown(area [][]int) {
 			}
 		}
 	}
+	return area
 }
 
-func toRight(area [][]int) {
+func toRight(area [][]int) [][]int {
 	for k := 0; k < len(area); k++ {
 		for i := len(area) - 1; i >= 0; i-- {
 			for j := len(area) - 2; j >= 0; j-- {
@@ -186,9 +207,10 @@ func toRight(area [][]int) {
 			}
 		}
 	}
+	return area
 }
 
-func toLeft(area [][]int) {
+func toLeft(area [][]int) [][]int {
 	for k := 0; k < len(area); k++ {
 		for i := 0; i < len(area); i++ {
 			for j := 1; j < len(area); j++ {
@@ -217,4 +239,5 @@ func toLeft(area [][]int) {
 			}
 		}
 	}
+	return area
 }
