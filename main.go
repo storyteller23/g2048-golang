@@ -8,6 +8,8 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
+var score = 0
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	area := createArea()
@@ -51,10 +53,24 @@ func displayArea(area [][]int) {
 	fmt.Println("o--------o--------o--------o--------o")
 	for _, row := range area {
 		fmt.Println("|        |        |        |        |")
-		fmt.Printf("|%5d   |%5d   |%5d   |%5d   |\n", row[0], row[1], row[2], row[3])
+		fmt.Print("|")
+		for _, n := range row {
+			if n == 0 {
+				fmt.Print("        |")
+			} else {
+				fmt.Printf("%5d   |", n)
+			}
+		}
+		fmt.Println()
 		fmt.Println("|        |        |        |        |")
 		fmt.Println("o--------o--------o--------o--------o")
 	}
+	fmt.Printf("\t\tSCORE: %d\n", score)
+	fmt.Println("'w' - UP")
+	fmt.Println("'s' - DOWN")
+	fmt.Println("'a' - LEFT")
+	fmt.Println("'d' - RIGHT")
+	fmt.Println("'q' - EXIT")
 }
 
 func zerosCoord(area [][]int) [][]int {
@@ -96,6 +112,7 @@ func toUp(area [][]int) {
 		for j := 1; j < len(area); j++ {
 			if area[j-1][i] == area[j][i] {
 				area[j-1][i] = area[j-1][i] + area[j][i]
+				score += area[j-1][i]
 				area[j][i] = 0
 			}
 		}
@@ -125,6 +142,7 @@ func toDown(area [][]int) {
 		for j := len(area) - 2; j >= 0; j-- {
 			if area[j+1][i] == area[j][i] {
 				area[j+1][i] = area[j+1][i] + area[j][i]
+				score += area[j+1][i]
 				area[j][i] = 0
 			}
 		}
@@ -154,6 +172,7 @@ func toRight(area [][]int) {
 		for j := len(area) - 2; j >= 0; j-- {
 			if area[i][j+1] == area[i][j] {
 				area[i][j+1] = area[i][j+1] + area[i][j]
+				score += area[i][j+1]
 				area[i][j] = 0
 			}
 		}
@@ -183,6 +202,7 @@ func toLeft(area [][]int) {
 		for j := 1; j < len(area); j++ {
 			if area[i][j-1] == area[i][j] {
 				area[i][j-1] = area[i][j-1] + area[i][j]
+				score += area[i][j-1]
 				area[i][j] = 0
 			}
 		}
